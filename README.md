@@ -1,2 +1,16 @@
 # spring_boot_rest
- This repository will show the process of studying spring and rest frameworks. Ready-made projects will be taken as a basis. As I study, I will make some of my additions to the project. Thanks for you attantion ;)
+
+ Здесь будет описан весь теоретический материал, который я изучил и испольлзовал в реализации этого приложеия.
+ 
+ Spring - MVC фреймфорк, использующий аннотации, которые позволяют облегчить процесс создания RESTfull веб-сервиса.
+ Основная разница между традиционным Spring MVC контроллером и RESTfull веб-сервис контроллером заключается в 
+ способе создания тела HTTP ответа. MVC контроллер опирается на технологию View, а RESTfull веб сервис контроллер
+ возвращает объект, который представляется в HTTP ответе  в виде JSON или XML.
+ 
+ Основное отличие аннотаций @Controller от @RestController заключается в том, что при использовании последней,
+ аннотация @ResponseBody активируется по умолчанию. При использовании @ResponseBody аннотации для метода, Spring
+ автоматически записывает результат в тело http ответа.У Spring есть список HttpMessageConverters. 
+ HttpMessageConverter обязан конвертировать тело запроса к определенному классу и класс к телу ответа,
+ в зависимости от типа. Каждый раз, когда происходит запрос с аннотацией @ResponseBody, Spring ищет среди всех 
+ HttpMessageConverters подходящий и использует его.
+ 

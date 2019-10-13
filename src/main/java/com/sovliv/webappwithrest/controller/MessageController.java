@@ -9,19 +9,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Класс контроллер
+ * Класс контроллер.
  */
 @RestController
 @RequestMapping("message")
 public class MessageController {
 
     /**
-     * Счетчик записей
+     * Счетчик записей.
      */
     private int counter = 4;
 
     /**
-     * Коллекция, хранящая в себе сообщения
+     * Коллекция, хранящая в себе сообщения.
      */
     private List<Map<String, String>> messages = new ArrayList<Map<String, String>>(){{
         add(new HashMap<String, String>(){{put("id", "1"); put("text", "first message");}});
@@ -35,9 +35,11 @@ public class MessageController {
     }
 
     /**
-     * Метод получения записи по id
-     * Добавлен фильт сообщений по id
-     * Добавлен exception при не соответствии id какому-либо сообщению
+     * Метод получения записи по id.
+     * Добавлен фильт сообщений по id.
+     * Добавлен exception при не соответствии id какому-либо сообщению.
+     * Аннотация @PathVariable предназначена для работы с параметрами, передаваемыми
+     * через адрес запроса в Spring WebMVC.
      * @param id
      * @return
      */
@@ -48,7 +50,9 @@ public class MessageController {
     }
 
     /**
-     * Поиск записи по id
+     * Поиск записи по id.
+     * Аннотация @GetMapping говорит о том, что метод getOne() должен быть вызван, когда
+     * кто-то вызовет метод GET на пути /message. Имя пути берется из параметра @RequestMapping.
      * @param id
      * @return
      */
@@ -58,7 +62,11 @@ public class MessageController {
     }
 
     /**
-     * Добавление новой записи
+     * Добавление новой записи.
+     * Аннотация @PostMapping говорит о том, что метод create() должен быть вызван, когда
+     * кто-то вызовет метод POST на пути /message. Имя пути берется из параметра @RequestMapping.
+     * Аннотация @RequestBody используется для чтения тела запроса и десериализовывания в Object
+     * через HttpMessageConverter.
      */
     @PostMapping
     Map<String, String> create(@RequestBody Map<String, String> message) {
@@ -68,7 +76,9 @@ public class MessageController {
     }
 
     /**
-     * Обновление текущей записи
+     * Обновление текущей записи.
+     * Аннотация @PutMapping говорит о том, что метод update() будет вызван, когда
+     * кто-то вызовет метод PUT на пути /message. Имя пути берется из параметра @RequestMapping.
      * @param id
      */
     @PutMapping("{id}")
@@ -81,7 +91,9 @@ public class MessageController {
     }
 
     /**
-     * Удаление записи по id
+     * Удаление записи по id.
+     * Аннотация @DeleteMapping говорит о том, что метод delete() будет вызван, когда
+     * кто-то вызовет метод DELETE на пути /message. Имя пути берется из параметра @RequestMapping.
      * @param id
      */
     @DeleteMapping("{id}")

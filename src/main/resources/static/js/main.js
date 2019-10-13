@@ -1,7 +1,7 @@
 // Работа с Vue.js
 Vue.component('message-row',{
     props: ['message'],
-    template: '<div><i>({{ message.id }}})</i>{{ message.text }}</div>'
+    template: '<div><i>({{ message.id }})</i>{{ message.text }}</div>'
 })
 
 // Определяем новый компонент под именем messages-list
@@ -16,7 +16,7 @@ var app = new Vue({
     template: '<messages-list :messages="messages"/>',
     data: {
         messages: [
-            {id: '1', text: 'firs'},
+            {id: '1', text: 'first'},
             {id: '2', text: 'second'},
             {id: '3', text: 'third'}
         ]

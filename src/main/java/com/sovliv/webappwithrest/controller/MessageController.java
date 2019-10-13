@@ -1,10 +1,14 @@
 package com.sovliv.webappwithrest.controller;
 
-import com.sovliv.webappwithrest.exceptions.NotFoundException;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.sovliv.webappwithrest.domain.Message;
+import com.sovliv.webappwithrest.domain.Views;
+import com.sovliv.webappwithrest.repo.MessageRepo;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -18,47 +22,34 @@ public class MessageController {
     /**
      * Счетчик записей.
      */
-    private int counter = 4;
+    private final MessageRepo messageRepo;
 
     /**
-     * Коллекция, хранящая в себе сообщения.
+     * Аннотация @Autowired отмечает конструктор, поле или метод как требующий
+     * автозаполнения инъекцией зависимости Spring.
+     * @param messageRepo
      */
-    private List<Map<String, String>> messages = new ArrayList<Map<String, String>>(){{
-        add(new HashMap<String, String>(){{put("id", "1"); put("text", "first message");}});
-        add(new HashMap<String, String>(){{put("id", "2"); put("text", "second message");}});
-        add(new HashMap<String, String>(){{put("id", "3"); put("text", "third message");}});
-    }};
-
-    @GetMapping
-    public List<Map<String, String>> list() {
-        return messages;
+    @Autowired
+    public MessageController(MessageRepo messageRepo) {
+        this.messageRepo = messageRepo;
     }
 
-    /**
-     * Метод получения записи по id.
-     * Добавлен фильт сообщений по id.
-     * Добавлен exception при не соответствии id какому-либо сообщению.
-     * Аннотация @PathVariable предназначена для работы с параметрами, передаваемыми
-     * через адрес запроса в Spring WebMVC.
-     * @param id
-     * @return
-     */
-    private Map<String, String> getMessage(@PathVariable String id) {
-        return messages.stream()
-                .filter(message -> message.get("id").equals(id))
-                .findFirst().orElseThrow(NotFoundException::new);
+    @GetMapping
+    @JsonView(Views.IdName.class)
+    public List<Message> list() {
+        return messageRepo.findAll();
     }
 
     /**
      * Поиск записи по id.
      * Аннотация @GetMapping говорит о том, что метод getOne() должен быть вызван, когда
      * кто-то вызовет метод GET на пути /message. Имя пути берется из параметра @RequestMapping.
-     * @param id
-     * @return
+     * @return message.
      */
     @GetMapping("{id}")
-    public Map<String, String> getOne(@PathVariable String id) {
-        return getMessage(id);
+    @JsonView(Views.FullMessage.class)
+    public Message getOne(@PathVariable("id") Message message) {
+        return message;
     }
 
     /**
@@ -67,38 +58,34 @@ public class MessageController {
      * кто-то вызовет метод POST на пути /message. Имя пути берется из параметра @RequestMapping.
      * Аннотация @RequestBody используется для чтения тела запроса и десериализовывания в Object
      * через HttpMessageConverter.
+     * @return message.
      */
     @PostMapping
-    Map<String, String> create(@RequestBody Map<String, String> message) {
-        message.put("id", String.valueOf(counter++));
-        messages.add(message);
-        return message;
+    Message create(@RequestBody Message message) {
+        message.setCreationDate(LocalDateTime.now());
+        return messageRepo.save(message);
     }
 
     /**
      * Обновление текущей записи.
      * Аннотация @PutMapping говорит о том, что метод update() будет вызван, когда
      * кто-то вызовет метод PUT на пути /message. Имя пути берется из параметра @RequestMapping.
-     * @param id
+     * @return message.
      */
     @PutMapping("{id}")
-    public Map<String, String> update(@PathVariable String id, @RequestBody Map<String, String> message) {
-        Map<String, String> messageFromDB = getMessage(id);
-        messageFromDB.putAll(message);
-        messageFromDB.put("id", id);
-
-        return messageFromDB;
+    public Message update(@PathVariable("id") Message messageFromDB,
+                          @RequestBody Message message) {
+        BeanUtils.copyProperties(message, messageFromDB, "id");
+        return messageRepo.save(messageFromDB);
     }
 
     /**
      * Удаление записи по id.
      * Аннотация @DeleteMapping говорит о том, что метод delete() будет вызван, когда
      * кто-то вызовет метод DELETE на пути /message. Имя пути берется из параметра @RequestMapping.
-     * @param id
      */
     @DeleteMapping("{id}")
-    public void delete(@PathVariable String id) {
-        Map<String, String> message = getMessage(id);
-        messages.remove(message);
+    public void delete(@PathVariable("id") Message message) {
+        messageRepo.delete(message);
     }
 }

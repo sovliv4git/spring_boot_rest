@@ -1,0 +1,6 @@
+/home/sorryimbrainlessdeveloper/IdeaProjects/webappwithrest/spring_boot_rest/src/main/java/com/sovliv/webappwithrest/domain/Views.java
+/home/sorryimbrainlessdeveloper/IdeaProjects/webappwithrest/spring_boot_rest/src/main/java/com/sovliv/webappwithrest/domain/Message.java
+/home/sorryimbrainlessdeveloper/IdeaProjects/webappwithrest/spring_boot_rest/src/main/java/com/sovliv/webappwithrest/repo/MessageRepo.java
+/home/sorryimbrainlessdeveloper/IdeaProjects/webappwithrest/spring_boot_rest/src/main/java/com/sovliv/webappwithrest/exceptions/NotFoundException.java
+/home/sorryimbrainlessdeveloper/IdeaProjects/webappwithrest/spring_boot_rest/src/main/java/com/sovliv/webappwithrest/controller/MessageController.java
+/home/sorryimbrainlessdeveloper/IdeaProjects/webappwithrest/spring_boot_rest/src/main/java/com/sovliv/webappwithrest/WebAppWithRestApplication.java

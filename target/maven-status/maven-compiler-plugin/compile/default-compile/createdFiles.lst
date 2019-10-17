@@ -1,0 +1,9 @@
+com/sovliv/webappwithrest/domain/Views$FullMessage.class
+com/sovliv/webappwithrest/WebAppWithRestApplication.class
+com/sovliv/webappwithrest/domain/Views$IdName.class
+com/sovliv/webappwithrest/domain/Views.class
+com/sovliv/webappwithrest/domain/Message.class
+com/sovliv/webappwithrest/controller/MessageController.class
+com/sovliv/webappwithrest/repo/MessageRepo.class
+com/sovliv/webappwithrest/domain/Views$Id.class
+com/sovliv/webappwithrest/exceptions/NotFoundException.class

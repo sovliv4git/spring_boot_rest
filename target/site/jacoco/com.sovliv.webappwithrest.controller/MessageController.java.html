@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MessageController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webappwithrest</a> &gt; <a href="index.source.html" class="el_package">com.sovliv.webappwithrest.controller</a> &gt; <span class="el_source">MessageController.java</span></div><h1>MessageController.java</h1><pre class="source lang-java linenums">package com.sovliv.webappwithrest.controller;
+
+import com.fasterxml.jackson.annotation.JsonView;
+import com.sovliv.webappwithrest.domain.Message;
+import com.sovliv.webappwithrest.domain.Views;
+import com.sovliv.webappwithrest.repo.MessageRepo;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Класс контроллер.
+ */
+@RestController
+@RequestMapping(&quot;message&quot;)
+public class MessageController {
+
+    /**
+     * Счетчик записей.
+     */
+    private final MessageRepo messageRepo;
+
+    /**
+     * Аннотация @Autowired отмечает конструктор, поле или метод как требующий
+     * автозаполнения инъекцией зависимости Spring.
+     * @param messageRepo
+     */
+    @Autowired
+<span class="fc" id="L33">    public MessageController(MessageRepo messageRepo) {</span>
+<span class="fc" id="L34">        this.messageRepo = messageRepo;</span>
+<span class="fc" id="L35">    }</span>
+
+    @GetMapping
+    @JsonView(Views.IdName.class)
+    public List&lt;Message&gt; list() {
+<span class="nc" id="L40">        return messageRepo.findAll();</span>
+    }
+
+    /**
+     * Поиск записи по id.
+     * Аннотация @GetMapping говорит о том, что метод getOne() должен быть вызван, когда
+     * кто-то вызовет метод GET на пути /message. Имя пути берется из параметра @RequestMapping.
+     * @return message.
+     */
+    @GetMapping(&quot;{id}&quot;)
+    @JsonView(Views.FullMessage.class)
+    public Message getOne(@PathVariable(&quot;id&quot;) Message message) {
+<span class="nc" id="L52">        return message;</span>
+    }
+
+    /**
+     * Добавление новой записи.
+     * Аннотация @PostMapping говорит о том, что метод create() должен быть вызван, когда
+     * кто-то вызовет метод POST на пути /message. Имя пути берется из параметра @RequestMapping.
+     * Аннотация @RequestBody используется для чтения тела запроса и десериализовывания в Object
+     * через HttpMessageConverter.
+     * @return message.
+     */
+    @PostMapping
+    Message create(@RequestBody Message message) {
+<span class="nc" id="L65">        message.setCreationDate(LocalDateTime.now());</span>
+<span class="nc" id="L66">        return messageRepo.save(message);</span>
+    }
+
+    /**
+     * Обновление текущей записи.
+     * Аннотация @PutMapping говорит о том, что метод update() будет вызван, когда
+     * кто-то вызовет метод PUT на пути /message. Имя пути берется из параметра @RequestMapping.
+     * @return message.
+     */
+    @PutMapping(&quot;{id}&quot;)
+    public Message update(@PathVariable(&quot;id&quot;) Message messageFromDB,
+                          @RequestBody Message message) {
+<span class="nc" id="L78">        BeanUtils.copyProperties(message, messageFromDB, &quot;id&quot;);</span>
+<span class="nc" id="L79">        return messageRepo.save(messageFromDB);</span>
+    }
+
+    /**
+     * Удаление записи по id.
+     * Аннотация @DeleteMapping говорит о том, что метод delete() будет вызван, когда
+     * кто-то вызовет метод DELETE на пути /message. Имя пути берется из параметра @RequestMapping.
+     */
+    @DeleteMapping(&quot;{id}&quot;)
+    public void delete(@PathVariable(&quot;id&quot;) Message message) {
+<span class="nc" id="L89">        messageRepo.delete(message);</span>
+<span class="nc" id="L90">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

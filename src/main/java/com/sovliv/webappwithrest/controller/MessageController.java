@@ -19,9 +19,6 @@ import java.util.Map;
 @RequestMapping("message")
 public class MessageController {
 
-    /**
-     * Счетчик записей.
-     */
     private final MessageRepo messageRepo;
 
     /**
